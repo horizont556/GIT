@@ -1,0 +1,91 @@
+1.	ПЕРВОНАЧАЛЬНАЯ НАСТРОЙКА git
+mkdir C:\431121\SAR
+cd C://431121/SAR
+git init
+git config user.name "Almaz"
+git config user.email "salahovkfs@yandex.ru"
+echo. > my_first_file.txt
+git add my_first_file.txt
+git commit -m "Первый Коммит"
+echo "test row" >> my_first_file.txt
+git add my_first_file.txt
+echo. > my_second_file.txt
+git add my_second_file.txt
+
+2.	ИГНОРИРОВАНИЕ, СРАВНЕНИЕ, УДАЛЕНИЕ И ПЕРЕМЕЩЕНИЕ ФАЙЛОВ
+mkdir temp
+mkdir log
+echo. > log/main.html
+echo. > log/home.tmp
+echo temp/ > .gitignore
+echo log/*.tmp >> .gitignore
+git add .gitignore
+git commit -m "Добавлен файл .gitignore"
+echo "row to index" >> my_first_file.txt
+git add my_first_file.txt
+echo "row noindex" >> my_first_file.txt
+git diff
+git rm -f my_first_file.txt
+git commit -m "Удален файл my_first_file.txt"
+git mv my_second_file.txt my_first_file.txt
+git commit -m "Переименован файл my_second_file.txt в my_first_file.txt"
+
+3.	ПРОСМОТР ИСТОРИИ КОММИТОВ
+git log --pretty=format:" %ae, %ad, %P"
+
+4.	ОТМЕНА ИЗМЕНЕНИЙ. РАБОТА С МЕТКАМИ
+echo. > 1.txt
+echo. > 2.txt
+echo. > 3.txt
+git add 1.txt
+git commit -m "add 1.txt file"
+git add 2.txt 3.txt
+git reset HEAD 2.txt
+git add 2.txt 3.txt
+git commit --amend -m "add 1.txt and 3.txt"
+git tag -a v0.01 -m "Version 0.01"
+git checkout -b vetka 376b433
+
+5.	ВЕТВЛЕНИЕ. КОНФЛИКТЫ
+git checkout -b my_first_branch
+echo "New content in branch" > in_branch.txt
+git add in_branch.txt
+git commit -m "Add in_branch.txt"
+git checkout master
+git checkout -b new_branch
+echo "new row in 1.txt file" >> 1.txt
+git add 1.txt
+git commit -m "Add new row to 1.txt"
+git checkout master
+git merge my_first_branch
+git merge new_branch
+git branch -d my_first_branch
+git branch -d new_branch
+git checkout -b branch2
+git checkout -b branch1
+echo "fix in 1.txt" > 1.txt
+echo "fix in 3.txt" > 3.txt
+git add 1.txt 3.txt
+git commit -m "Fixes in branch1"
+git checkout branch2
+echo "My fix in 1.txt" > 1.txt
+echo "My fix in 3.txt" > 3.txt
+git add 1.txt 3.txt
+git commit -m "My fixes in branch2"
+git checkout branch1
+git merge branch2
+git config --global merge.tool "'C:/Program Files/Meld/Meld.exe'"
+git mergetool --tool=meld 3.txt
+
+6.	ПРЯТАНЬЕ
+git branch --merged master
+git branch -d master
+git branch -d vetka
+git checkout -b work
+echo "Изменения в 1.txt" >> 1.txt
+git stash
+git stash apply --index
+git stash branch new_branch
+
+7.	РАБОТА С УДАЛЕННЫМ РЕПОЗИТОРИЕМ
+git clone git@github.com:horizont556/431121.git
